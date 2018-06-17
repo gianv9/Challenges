@@ -3,24 +3,49 @@ using System.Collections.Generic;
 
 namespace Goldbach_s_Conjecture
 {
+
     class Goldbach
     {
-        // MethodAccessException time measurement in .Net:
+        // Method time measurement in .Net:
         // https://stackoverflow.com/questions/14019510/calculate-the-execution-time-of-a-method
         static void Main(string[] args)
         {
-            List<int> primes = new List<int>();
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            for (int i = 0; i < 1000000; i++)
+            #region Receiving Input
+            int T = int.Parse(Console.ReadLine());
+            int[] testCases = new int[T];
+
+            for (int i = 0; i < T; i++)
             {
-                if(SixK.PrimalityTest(i)){
-                    primes.Add(i);
-                }   
+                testCases[i] = int.Parse(Console.ReadLine());
             }
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-            Console.WriteLine("Execution time: " + elapsedMs + " MilliSeconds");
-            Console.WriteLine(primes.Count + " primes found!");
+            #endregion
+            
+
+            #region Goldbach's Conjecture testing
+            // 10 tests
+            int[][] answers = new int[10][];
+            for (int i = 0; i < T; i++)
+            {
+                // each test migth have 3 numbers as an answer
+                answers[i] = new int[3];
+                Console.WriteLine("Primes before number " + testCases[i]);
+                for (int j = 2; j < testCases[i]-1; j++)
+                {
+                    if (SixK.PrimalityTest(j))
+                    {
+                     Console.WriteLine(j);
+                    }
+
+
+                    // find the numbers
+                        // if a new combination is found, 
+                        // select the one that minimizes the total difference between the smallest and largest prime
+                }
+            }
+            #endregion
+            
+
+
         }
     }
 
