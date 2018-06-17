@@ -11,17 +11,19 @@ namespace Goldbach_s_Conjecture
         static void Main(string[] args)
         {
             #region Receiving Input
+            Console.WriteLine("Number of Test Cases(T): ");
             int T = int.Parse(Console.ReadLine());
             int[] testCases = new int[T];
 
             for (int i = 0; i < T; i++)
             {
+                Console.WriteLine("TestCase"+i+":");
                 testCases[i] = int.Parse(Console.ReadLine());
             }
             #endregion
-            
 
             #region Goldbach's Conjecture testing
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             // 10 tests
             int[][] answers = new int[10][];
             for (int i = 0; i < T; i++)
@@ -33,7 +35,8 @@ namespace Goldbach_s_Conjecture
                 {
                     if (SixK.PrimalityTest(j))
                     {
-                     Console.WriteLine(j);
+                        Console.WriteLine(j);
+
                     }
 
 
@@ -42,6 +45,9 @@ namespace Goldbach_s_Conjecture
                         // select the one that minimizes the total difference between the smallest and largest prime
                 }
             }
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine("Execution time: " + elapsedMs + " MilliSeconds");
             #endregion
             
 
