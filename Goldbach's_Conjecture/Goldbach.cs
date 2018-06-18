@@ -40,7 +40,8 @@ namespace Goldbach_s_Conjecture
             //bool breakFlag = false;
             for (int i = 0; i < T; i++)
             {
-                int[] result = new int[3]{0,0,0};
+                int[] result = new int[3];
+                int[] tempResult = new int[3]{0,0,0};
                 for (int x = 0; x < possiblePrimes.Count && possiblePrimes[x] < testCases[i]; x++)
                 {
                     for (int y = 0; y < possiblePrimes.Count && possiblePrimes[y] < testCases[i]; y++)
@@ -49,13 +50,11 @@ namespace Goldbach_s_Conjecture
                         {
                             //Console.WriteLine("x: "+possiblePrimes[x]+", y: "+possiblePrimes[y]+", j: "+possiblePrimes[j]);
                             if( (possiblePrimes[x]+possiblePrimes[y]+possiblePrimes[j]) == testCases[i] ){
-                                int[] tempResult = new int[]{possiblePrimes[x],possiblePrimes[y],possiblePrimes[j]};
+                                tempResult = new int[]{possiblePrimes[x],possiblePrimes[y],possiblePrimes[j]};
                                 //Console.WriteLine(testCases[i] + " = " + possiblePrimes[x] + " + " + possiblePrimes[y] + " + " + possiblePrimes[j] + "->" + Toolbox.LargestSmallestDiff(tempResult) );
-                                
-                                if(result[0] == 0){
-                                    result = tempResult;
-                                }
-                                else if(Toolbox.LargestSmallestDiff(tempResult) < Toolbox.LargestSmallestDiff(result) ){
+                                int t1 = Toolbox.LargestSmallestDiff(tempResult);
+                                int t2 = Toolbox.LargestSmallestDiff(result);
+                                if( t1 < t2 || t2 == 0 ){
                                     result = tempResult;
                                 }
 
@@ -107,7 +106,8 @@ namespace Goldbach_s_Conjecture
     class Toolbox
     {
         public static int LargestSmallestDiff(int[] arr){
-            int largest = 0, smallest = arr[0];
+            int largest = arr[0], smallest = arr[0];
+            
             for (int i = 0; i < 3; i++)
             {
                 if (arr[i] > largest){
@@ -117,6 +117,21 @@ namespace Goldbach_s_Conjecture
                     smallest = arr[i];
                 }
             }
+            /*
+            if(largest < arr[1]){
+                largest = arr[1];
+            }
+            else if(largest < arr[2]){
+                largest = arr[2];
+            }
+
+            if(smallest > arr[1]){
+                smallest = arr[1];
+            }
+            else if(smallest > arr[2]){
+                smallest = arr[2];
+            }
+            */
             return (largest-smallest);
         }
     }
