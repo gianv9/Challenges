@@ -4,21 +4,23 @@ using System.Collections.Generic;
 namespace Goldbach_s_Conjecture
 {
 
+
     class Goldbach
     {
         // Method time measurement in .Net:
         // https://stackoverflow.com/questions/14019510/calculate-the-execution-time-of-a-method
         static void Main(string[] args)
-        {
+        {   
+
             #region Receiving Input
             Console.WriteLine("Number of Test Cases(T): ");
-            int T = int.Parse(Console.ReadLine());
-            int[] testCases = new int[T];
-            //int highest = 0;
-            for (int i = 0; i < T; i++)
+            long T = long.Parse(Console.ReadLine());
+            long[] testCases = new long[T];
+            //long highest = 0;
+            for (long i = 0; i < T; i++)
             {
                 Console.WriteLine("TestCase"+i+":");
-                testCases[i] = int.Parse(Console.ReadLine());
+                testCases[i] = long.Parse(Console.ReadLine());
                 // if(testCases[i] > highest){
                 //     highest = testCases[i];
                 // }
@@ -26,9 +28,9 @@ namespace Goldbach_s_Conjecture
             #endregion
 
             #region set Generation
-            // List<int> possiblePrimes = new List<int>();
-            // highest = (int)(highest*0.55);
-            //     for (int i = 2; i <= highest; i++)
+            // List<long> possiblePrimes = new List<long>();
+            // highest = (long)(highest*0.55);
+            //     for (long i = 2; i <= highest; i++)
             //     {
             //         if (SixK.PrimalityTest(i))
             //         {
@@ -42,12 +44,12 @@ namespace Goldbach_s_Conjecture
             #region Goldbach's Conjecture testing
             var watch = System.Diagnostics.Stopwatch.StartNew();
             //bool breakFlag = false;
-            for (int i = 0; i < T; i++)
+            for (long i = 0; i < T; i++)
             {
 
-                List<int> possiblePrimes = new List<int>();
-                int limit = (int)(testCases[i]*0.55);
-                    for (int x = 2; x <= limit; x++)
+                List<long> possiblePrimes = new List<long>();
+                long limit = (long)(testCases[i]*0.55);
+                    for (long x = 2; x <= limit; x++)
                     {
                         if (SixK.PrimalityTest(x))
                         {
@@ -57,17 +59,17 @@ namespace Goldbach_s_Conjecture
 
                 Console.WriteLine("Primes set size: "+possiblePrimes.Count);
 
-                int[] result = new int[3]{0,0,0};
-                for (int x = 0; x < possiblePrimes.Count && possiblePrimes[x] < testCases[i]; x++)
+                long[] result = new long[3]{0,0,0};
+                for (long x = 0; x < possiblePrimes.Count && possiblePrimes[(int)x] < testCases[(int)i]; x++)
                 {
-                    for (int y = 0; y < possiblePrimes.Count && possiblePrimes[y] < testCases[i]; y++)
+                    for (long y = 0; y < possiblePrimes.Count && possiblePrimes[(int)y] < testCases[(int)i]; y++)
                     {
-                        for (int j = 0; j < possiblePrimes.Count && possiblePrimes[j] < testCases[i]; j++)
+                        for (long j = 0; j < possiblePrimes.Count && possiblePrimes[(int)j] < testCases[(int)i]; j++)
                         {
                             //Console.WriteLine("x: "+possiblePrimes[x]+", y: "+possiblePrimes[y]+", j: "+possiblePrimes[j]);
-                            if( (possiblePrimes[x]+possiblePrimes[y]+possiblePrimes[j]) == testCases[i] ){
-                                int[] tempResult = new int[]{possiblePrimes[x],possiblePrimes[y],possiblePrimes[j]};
-                                //Console.WriteLine(testCases[i] + " = " + possiblePrimes[x] + " + " + possiblePrimes[y] + " + " + possiblePrimes[j] + "->" + Toolbox.LargestSmallestDiff(tempResult) );
+                            if( (possiblePrimes[(int)x]+possiblePrimes[(int)y]+possiblePrimes[(int)j]) == testCases[(int)i] ){
+                                long[] tempResult = new long[]{possiblePrimes[(int)x],possiblePrimes[(int)y],possiblePrimes[(int)j]};
+                                //Console.WriteLine(testCases[(int)i] + " = " + possiblePrimes[(int)x] + " + " + possiblePrimes[(int)y] + " + " + possiblePrimes[(int)j] + "->" + Toolbox.LargestSmallestDiff(tempResult) );
                                 
                                 if(result[0] == 0){
                                     result = tempResult;
@@ -90,13 +92,13 @@ namespace Goldbach_s_Conjecture
 
 
 /* 
-            int worstCaseScenario = 1000000;
-            int[] selected = new int[]{0,0,0};
-            int counter = 0;
-            for (int i = possiblePrimes.Count; i < 0 ; i--)
+            long worstCaseScenario = 1000000;
+            long[] selected = new long[]{0,0,0};
+            long counter = 0;
+            for (long i = possiblePrimes.Count; i < 0 ; i--)
             {
                 if(possiblePrimes[i] < worstCaseScenario){
-                    int temp = possiblePrimes[i];
+                    long temp = possiblePrimes[i];
                     if(counter == 0){
                         selected[counter]=possiblePrimes[i];
                         counter++;
@@ -123,9 +125,9 @@ namespace Goldbach_s_Conjecture
 
     class Toolbox
     {
-        public static int LargestSmallestDiff(int[] arr){
-            int largest = 0, smallest = arr[0];
-            for (int i = 0; i < 3; i++)
+        public static long LargestSmallestDiff(long[] arr){
+            long largest = 0, smallest = arr[0];
+            for (long i = 0; i < 3; i++)
             {
                 if (arr[i] > largest){
                     largest = arr[i];
@@ -144,7 +146,7 @@ namespace Goldbach_s_Conjecture
     /// </summary>
     class SixK
     {
-        public static bool PrimalityTest(int number){
+        public static bool PrimalityTest(long number){
                 if (number <= 1){
                     return false;
                 }
@@ -154,7 +156,7 @@ namespace Goldbach_s_Conjecture
                 else if(number%2 == 0 || number%3 ==0){
                     return false;
                 }
-                int i = 5;
+                long i = 5;
                 while( i * i <= number ){
                     if(number%i == 0 || number%(i+2) == 0){
                         return false;
