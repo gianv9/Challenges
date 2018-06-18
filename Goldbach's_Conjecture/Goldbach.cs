@@ -22,36 +22,102 @@ namespace Goldbach_s_Conjecture
             }
             #endregion
 
+            #region set Generation
+            List<int> possiblePrimes = new List<int>();
+                for (int i = 2; i <= 100000; i++)
+                {
+                    if (SixK.PrimalityTest(i))
+                    {
+                        possiblePrimes.Add(i);
+                    }
+                }
+
+            Console.WriteLine("Primes set size: "+possiblePrimes.Count);
+            #endregion
+
             #region Goldbach's Conjecture testing
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            // 10 tests
-            int[][] answers = new int[10][];
+            //bool breakFlag = false;
             for (int i = 0; i < T; i++)
             {
-                // each test migth have 3 numbers as an answer
-                answers[i] = new int[3];
-                Console.WriteLine("Primes before number " + testCases[i]);
-                for (int j = 2; j < testCases[i]-1; j++)
+                int[] result = new int[3]{0,0,0};
+                for (int x = 0; x < possiblePrimes.Count && possiblePrimes[x] < testCases[i]; x++)
                 {
-                    if (SixK.PrimalityTest(j))
+                    for (int y = 0; y < possiblePrimes.Count && possiblePrimes[y] < testCases[i]; y++)
                     {
-                        Console.WriteLine(j);
+                        for (int j = 0; j < possiblePrimes.Count && possiblePrimes[j] < testCases[i]; j++)
+                        {
+                            //Console.WriteLine("x: "+possiblePrimes[x]+", y: "+possiblePrimes[y]+", j: "+possiblePrimes[j]);
+                            if( (possiblePrimes[x]+possiblePrimes[y]+possiblePrimes[j]) == testCases[i] ){
+                                int[] tempResult = new int[]{possiblePrimes[x],possiblePrimes[y],possiblePrimes[j]};
+                                //Console.WriteLine(testCases[i] + " = " + possiblePrimes[x] + " + " + possiblePrimes[y] + " + " + possiblePrimes[j] + "->" + Toolbox.LargestSmallestDiff(tempResult) );
+                                
+                                if(result[0] == 0){
+                                    result = tempResult;
+                                }
+                                else if(Toolbox.LargestSmallestDiff(tempResult) < Toolbox.LargestSmallestDiff(result) ){
+                                    result = tempResult;
+                                }
 
+                            }
+                        }
                     }
-
-
-                    // find the numbers
-                        // if a new combination is found, 
-                        // select the one that minimizes the total difference between the smallest and largest prime
                 }
+
+                Console.WriteLine(testCases[i] + " = " + result[0] + " + " + result[1] + " + " + result[2]);
             }
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             Console.WriteLine("Execution time: " + elapsedMs + " MilliSeconds");
             #endregion
-            
 
 
+/* 
+            int worstCaseScenario = 1000000;
+            int[] selected = new int[]{0,0,0};
+            int counter = 0;
+            for (int i = possiblePrimes.Count; i < 0 ; i--)
+            {
+                if(possiblePrimes[i] < worstCaseScenario){
+                    int temp = possiblePrimes[i];
+                    if(counter == 0){
+                        selected[counter]=possiblePrimes[i];
+                        counter++;
+                    }
+                    else if( temp + selected[counter-1] < worstCaseScenario && counter != 3){
+                        selected[counter]=possiblePrimes[i];
+                        counter++;
+                    }
+                    else{
+                        if(selected[0] + selected[1] + selected[2] == worstCaseScenario){
+                            Console.WriteLine(testCases[i] + " = " + selected[0] + " + " + selected[1] + " + " + selected[2]);
+                        }
+                        else
+                        {
+                            counter = 
+                        }
+                    }
+                    
+
+                }
+            }*/
+        }
+    }
+
+    class Toolbox
+    {
+        public static int LargestSmallestDiff(int[] arr){
+            int largest = 0, smallest = arr[0];
+            for (int i = 0; i < 3; i++)
+            {
+                if (arr[i] > largest){
+                    largest = arr[i];
+                }
+                if(arr[i] < smallest){
+                    smallest = arr[i];
+                }
+            }
+            return (largest-smallest);
         }
     }
 
@@ -66,7 +132,7 @@ namespace Goldbach_s_Conjecture
                     return false;
                 }
                 else if(number <= 3){
-                    return false;
+                    return true;
                 }
                 else if(number%2 == 0 || number%3 ==0){
                     return false;
